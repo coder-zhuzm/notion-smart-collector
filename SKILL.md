@@ -5,6 +5,7 @@ description: 智能收藏链接到 Notion（自动路由到多数据表、生成
 
 按以下顺序执行（纯指令版，不依赖本地脚本）：
 
+0. 首次使用或配置变更时，先向用户确认 `references/notion-schema.md` 中全部配置（Notion token 来源、目标页面、各数据源 ID、字段映射、时区）；未确认前不写入。
 1. 从用户消息提取 URL（支持多链接）。
 2. 按 `references/routing-rules.md` 判断目标 Notion 表。
 3. 按 `references/summarizer-rules.md` 生成：
@@ -14,7 +15,7 @@ description: 智能收藏链接到 Notion（自动路由到多数据表、生成
    - 名称
    - 链接
    - 中文简介
-   - 收藏时间（UTC+8）
+   - 收藏时间（按用户确认的时区）
 5. 默认不查重、不读取整表；仅在用户明确要求时做查重。
 6. 完成后简短反馈：`完成✅｜<Notion表格名>`。
 

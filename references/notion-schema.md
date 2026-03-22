@@ -1,14 +1,29 @@
-统一字段：
+统一字段（默认映射，可由用户覆盖）：
 - 名称: title
 - 链接: url
 - 中文简介: rich_text
-- 收藏时间: date (UTC+8)
+- 收藏时间: date
 
-数据源 ID：
-- GitHub收藏表: 75d22416-ff66-4871-a056-b0b02e28ee75
-- 文章收藏表: 35fc0f2a-399f-4f54-a7f1-376d76daa31a
-- 视频收藏表: 02f06bf1-b604-4c13-9dbd-6f98e40b4ff9
-- 工具收藏表: d27e8224-3811-48e1-b597-d902a568ebd0
-- 社媒收藏表: be62059f-de75-4d29-8e47-67cd81a06da0
-- 默认收藏表: 1951d25d-8c2c-4095-a51c-83d59a5d65ec
-- OpenClaw收藏表: 0ddef7eb-f9af-4825-bb30-f2ecce0728e5
+⚠️ 首次使用前必须向用户确认以下信息（禁止写死个人配置）：
+1) Notion 凭证来源
+   - 环境变量名（示例：NOTION_API_TOKEN）
+   - 或凭证文件路径（如 .env）
+2) 目标工作区/总页面（可选）
+   - 收藏入口页面 URL（若用户需要）
+3) 路由目标数据源 ID（必填）
+   - GitHub收藏表: <USER_PROVIDED_DATA_SOURCE_ID>
+   - 文章收藏表: <USER_PROVIDED_DATA_SOURCE_ID>
+   - 视频收藏表: <USER_PROVIDED_DATA_SOURCE_ID>
+   - 工具收藏表: <USER_PROVIDED_DATA_SOURCE_ID>
+   - 社媒收藏表: <USER_PROVIDED_DATA_SOURCE_ID>
+   - 默认收藏表: <USER_PROVIDED_DATA_SOURCE_ID>
+   - OpenClaw收藏表: <USER_PROVIDED_DATA_SOURCE_ID>
+4) 字段名映射
+   - 名称/链接/中文简介/收藏时间 在用户 Notion 表中的真实字段名
+5) 收藏时间时区
+   - 例如 Asia/Shanghai（UTC+8）
+
+运行时规则：
+- 若任一必填配置缺失或不确定，先提问用户补齐，再执行写入。
+- 用户确认后可在本地私有配置中保存；再次使用时若检测到变更需重新确认。
+- 未经用户明确同意，不把用户的 token、数据库 ID 等敏感信息写入可公开分发的技能文件。
