@@ -26,6 +26,7 @@ description: 智能收藏链接到 Notion（自动路由到多数据表、生成
 - Notion 认证沿用当前运行时配置：每次调用前先执行 `set -a; source /root/.openclaw/workspace/.notion.env; set +a`，再读取 `NOTION_API_TOKEN`。
 - Notion API 版本固定使用 `2025-09-03`。
 - 收藏目标页面与现有各数据源 ID 沿用当前配置，不新增、不替换。
+- GitHub 链接默认优先走网页 meta / 页面标题抓取；仅在需要更多结构化信息时再请求 GitHub API。
 - GitHub 链接命名优先使用短标题：
   - 仓库主页：优先用 `owner/repo`
   - 仓库内文档页（如 README、docs、blob 页面）：优先用 `owner/repo + 文档名` 的简洁形式；若可识别语言，如 `README.zh.md`，优先整理成 `owner/repo README（中文）`
