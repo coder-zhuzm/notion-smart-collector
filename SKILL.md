@@ -5,11 +5,11 @@ description: 智能收藏链接到 Notion（自动路由到多数据表、生成
 
 执行流程（固定顺序）：
 1) 提取消息中的 URL（支持多个）。
-2) 读取 `references/routing-rules.md`，判断每个 URL 的目标数据表。
-3) 读取 `references/summarizer-rules.md`，为每个 URL 生成：
+2) 先使用已知稳定配置直接执行；仅当本地未缓存、用户明确要求审计流程、或写入报错时，才读取 `references/` 下的规则文件重新确认。
+3) 按 URL 类型选择最短链路，生成：
    - 名称（短标题）
    - 一句中文简介（优先轻量信息）
-4) 读取 `references/notion-schema.md`，按统一字段写入 Notion：
+4) 按已确认字段映射写入 Notion：
    - 名称
    - 链接
    - 中文简介
@@ -18,8 +18,10 @@ description: 智能收藏链接到 Notion（自动路由到多数据表、生成
 6) 完成后简短回复：`完成✅｜<Notion表格名>`
 
 实现约束：
-- 优先少请求：先轻量抓取，信息不足再补读一次。
-- X/Twitter 链接优先走 vxtwitter；不足再回退 oEmbed/syndication。
+- 以省 token / 省请求为默认策略：命中稳定规则时，不重复读取同一份 skill 说明、路由规则、schema 说明。
+- 优先少请求：先轻量抓取，信息不足再补读一次；不要默认做第二次抓取。
+- X/Twitter 链接优先只请求 1 次 `vxtwitter` 轻量元信息；不足再回退 oEmbed / syndication。
+- 已确认且稳定的 Notion 数据源 ID、字段映射、时区配置可直接复用；仅在写入失败、用户声明已改表、或配置缺失时重新校验 schema。
 - 批量链接时串行写入，避免触发速率限制。
 - Notion 认证沿用当前运行时配置：每次调用前先执行 `set -a; source /root/.openclaw/workspace/.notion.env; set +a`，再读取 `NOTION_API_TOKEN`。
 - Notion API 版本固定使用 `2025-09-03`。
